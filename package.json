@@ -1,0 +1,14 @@
+{
+  "name": "skybound-ios",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Capacitor wrapper that builds Skybound as an unsigned iOS IPA on GitHub Actions (macOS runner).",
+  "scripts": {
+    "build": "cap sync ios"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.0",
+    "@capacitor/core": "^6.1.0",
+    "@capacitor/ios": "^6.1.0"
+  }
+}

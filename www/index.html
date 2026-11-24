@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#eaf6ff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Skybound" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <title>Skybound — Hero's Bounty</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%235b5bd6'/%3E%3Crect x='14' y='18' width='36' height='30' rx='12' fill='white'/%3E%3Ccircle cx='25' cy='31' r='4' fill='%23242a4d'/%3E%3Ccircle cx='39' cy='31' r='4' fill='%23242a4d'/%3E%3Cpath d='M32 18V9' stroke='white' stroke-width='4'/%3E%3Ccircle cx='32' cy='7' r='5' fill='%23ffd34d'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Accounts -->
+    <div class="auth-screen hidden" id="authScreen">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <svg viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="56" class="suit"/>
+            <circle cx="60" cy="10" r="7" fill="#ffd34d"/>
+            <path d="M60 14V30" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+            <rect x="36" y="44" width="48" height="36" rx="16" fill="#fff"/>
+            <circle cx="52" cy="60" r="5" fill="#242a4d"/>
+            <circle cx="68" cy="60" r="5" fill="#242a4d"/>
+          </svg>
+        </div>
+        <h1>SKYBOUND</h1>
+        <p id="authHint">Create a pilot account to save your progress forever.</p>
+        <div id="authWelcome" class="auth-welcome hidden"></div>
+        <div id="authForm">
+          <input id="authUser" type="text" placeholder="Username (4+ letters)" maxlength="18" autocomplete="username" />
+          <input id="authPass" type="password" placeholder="Password (4+ characters)" maxlength="24" autocomplete="current-password" />
+          <div class="auth-error" id="authError"></div>
+          <button class="big-btn" id="authLoginBtn">Log in →</button>
+          <button class="big-btn btn-shop" id="authCreateBtn">Create account</button>
+        </div>
+        <div id="authReturn" class="hidden">
+          <button class="big-btn" id="authContinueBtn">Continue adventure →</button>
+          <button class="big-btn btn-shop" id="authSwitchBtn">Switch account</button>
+        </div>
+        <small>Saved on this phone. Come back anytime and continue.</small>
+      </div>
+    </div>
+
+    <!-- Cinematic intro -->
+    <div class="intro-screen" id="introScreen">
+      <div class="intro-stars"></div>
+      <div class="intro-glow"></div>
+      <div class="intro-content">
+        <div class="intro-logo">
+          <svg viewBox="0 0 140 140">
+            <circle cx="70" cy="70" r="64" class="intro-ring"/>
+            <path d="M70 14V32" class="intro-ant"/>
+            <circle cx="70" cy="12" r="7" class="intro-spark"/>
+            <rect x="24" y="30" width="92" height="80" rx="30" class="intro-suit"/>
+            <rect x="40" y="50" width="60" height="44" rx="20" class="intro-face"/>
+            <circle cx="57" cy="70" r="7" class="intro-eye"/>
+            <circle cx="83" cy="70" r="7" class="intro-eye"/>
+            <circle cx="55" cy="67" r="2.5" class="intro-eye-shine"/>
+            <circle cx="81" cy="67" r="2.5" class="intro-eye-shine"/>
+            <path d="M60 84q10 9 20 0" class="intro-smile"/>
+            <rect x="112" y="66" width="20" height="12" rx="4" class="intro-gun"/>
+            <circle cx="136" cy="72" r="5" class="intro-muzzle"/>
+          </svg>
+        </div>
+        <div class="intro-title">SKYBOUND</div>
+        <div class="intro-sub">H E R O ' S &nbsp; B O U N T Y</div>
+        <div class="intro-bar"><i></i></div>
+        <div class="intro-skip">tap to skip</div>
+      </div>
+    </div>
+
+    <!-- Top bar / HUD -->
+    <header class="topbar">
+      <div class="brand"><span class="brand-icon brand-logo" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 6V16" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="6" r="5" fill="#ffd34d"/><rect x="12" y="16" width="40" height="34" rx="14" class="suit"/><rect x="18" y="24" width="28" height="20" rx="10" fill="#fff"/><circle cx="26" cy="34" r="3.6" fill="#242a4d"/><circle cx="38" cy="34" r="3.6" fill="#242a4d"/><path d="M28 40q4 4 8 0" stroke="#242a4d" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span><span>skybound</span></div>
+      <div class="hud">
+        <div class="hud-chip hearts" id="hearts" aria-label="Lives"></div>
+        <div class="hud-chip"><span class="coin-icon" aria-hidden="true"></span> <span id="coinCount">0</span><span class="dim">/<span id="coinTotal">0</span></span></div>
+        <div class="hud-chip jump-chip" id="jumpChip" title="Double jump">⇧⇧</div>
+        <div class="hud-chip money-chip" id="moneyChip" title="Money"><span class="money-icon">$</span> <span id="moneyCount">0</span></div>
+        <div class="hud-chip timer" id="timer">0:00</div>
+      </div>
+    </header>
+
+    <!-- Progress -->
+    <div class="progress-wrap" aria-hidden="true">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-flag">🏁</span>
+    </div>
+
+    <!-- Game stage -->
+    <div class="stage" id="stage">
+      <canvas id="game"></canvas>
+      <div class="level-badge" id="levelBadge">WORLD 1/6 · Sky Meadow</div>
+      <div class="boss-ui hidden" id="bossUI">
+        <div class="boss-name" id="bossName">BOSS</div>
+        <div class="boss-track"><div class="boss-fill" id="bossFill"></div></div>
+      </div>
+      <div class="level-intro" id="levelIntro"></div>
+
+      <!-- Start -->
+      <div class="overlay" id="startOverlay">
+        <div class="panel start-panel">
+          <div class="hero-logo" aria-label="Skybound hero">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="56" fill="rgba(91,91,214,.1)"/>
+              <path d="M60 12V28" stroke="#5b5bd6" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="60" cy="10" r="8" fill="#ffd34d"/>
+              <rect x="22" y="26" width="76" height="68" rx="26" class="suit"/>
+              <rect x="34" y="42" width="52" height="38" rx="18" fill="#fff"/>
+              <circle cx="50" cy="58" r="6" fill="#242a4d"/>
+              <circle cx="70" cy="58" r="6" fill="#242a4d"/>
+              <circle cx="48" cy="55" r="2" fill="#fff"/>
+              <circle cx="68" cy="55" r="2" fill="#fff"/>
+              <path d="M52 70q8 8 16 0" stroke="#242a4d" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h1>Skybound</h1>
+          <button class="big-btn" id="playBtn">▶ &nbsp; Play</button>
+          <button class="big-btn btn-shop" id="menuShopBtn">👕 &nbsp; Wardrobe</button>
+        </div>
+      </div>
+
+      <!-- Level complete -->
+      <div class="overlay hidden" id="levelOverlay">
+        <div class="panel">
+          <div class="panel-emoji">✨</div>
+          <h2 id="levelCompleteTitle">Level complete!</h2>
+          <p>Coins: <b id="levelStars">0</b> · Time: <b id="levelTime">0:00</b></p>
+          <button class="big-btn" id="nextBtn">Next world →</button>
+          <button class="big-btn btn-shop" id="levelShopBtn">👕 Wardrobe</button>
+        </div>
+      </div>
+
+      <!-- Game over -->
+      <div class="overlay hidden" id="overOverlay">
+        <div class="panel">
+          <div class="panel-emoji">💫</div>
+          <h2>Oops, you fell!</h2>
+          <p>You collected <b id="overCoins">0</b> coins. Try again — the sky is forgiving.</p>
+          <button class="big-btn" id="retryBtn">Try again →</button>
+          <button class="big-btn btn-shop" id="overShopBtn">👕 Wardrobe</button>
+        </div>
+      </div>
+
+      <!-- Win -->
+      <div class="overlay hidden" id="winOverlay">
+        <div class="panel">
+          <div class="panel-emoji">🏆</div>
+          <h2 id="winTitle">You made it!</h2>
+          <p><span id="winText">Coins collected:</span> <b id="winCoins">0</b> · Time: <b id="winTime">0:00</b></p>
+          <button class="big-btn" id="againBtn">Play again →</button>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+
+    <!-- Full-screen wardrobe page -->
+    <div class="shop-page hidden" id="shopOverlay">
+      <div class="shop-head">
+        <div>
+          <h2>👕 Hero's Wardrobe</h2>
+          <p>Pick a suit. Look sharp. Save the sky.</p>
+        </div>
+        <div class="shop-wallet">💰 <span id="shopMoney">0</span></div>
+      </div>
+      <div class="shop-preview">
+        <svg viewBox="0 0 140 140" aria-label="Hero preview">
+          <circle cx="70" cy="70" r="64" class="shop-halo"/>
+          <circle cx="70" cy="12" r="7" fill="#ffd34d"/>
+          <path d="M70 14V32" stroke="#5b5bd6" stroke-width="5" stroke-linecap="round"/>
+          <rect x="24" y="30" width="92" height="80" rx="30" class="suit"/>
+          <rect x="40" y="50" width="60" height="44" rx="20" fill="#fff"/>
+          <circle cx="57" cy="70" r="7" fill="#242a4d"/>
+          <circle cx="83" cy="70" r="7" fill="#242a4d"/>
+          <circle cx="55" cy="67" r="2.5" fill="#fff"/>
+          <circle cx="81" cy="67" r="2.5" fill="#fff"/>
+          <path d="M60 84q10 9 20 0" stroke="#242a4d" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span id="shopOutfitName">Purple</span>
+      </div>
+      <div class="shop-grid" id="shopGrid"></div>
+      <button class="big-btn shop-back" id="closeShopBtn">← Back</button>
+    </div>
+
+    <!-- Touch controls -->
+    <div class="controls" id="controls">
+      <div class="pad pad-move">
+        <button class="ctrl" id="leftBtn" aria-label="Move left">◀</button>
+        <button class="ctrl" id="rightBtn" aria-label="Move right">▶</button>
+      </div>
+      <div class="pad pad-action">
+        <button class="ctrl fire" id="fireBtn" aria-label="Shoot"><span>FIRE</span></button>
+        <button class="ctrl jump" id="jumpBtn" aria-label="Jump"><span>JUMP</span></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

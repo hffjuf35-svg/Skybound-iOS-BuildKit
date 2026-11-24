@@ -1,0 +1,55 @@
+name: Build Skybound unsigned IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Capacitor
+        run: npm install --no-audit --no-fund
+
+      - name: Add iOS platform
+        run: npx cap add ios
+
+      - name: Sync web assets
+        run: npx cap sync ios
+
+      - name: Build unsigned app
+        run: |
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination generic/platform=iOS \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            SYMROOT="$(pwd)/build" \
+            build
+
+      - name: Pack as IPA
+        run: |
+          mkdir -p out/Payload
+          cp -R build/Release-iphoneos/App.app out/Payload/App.app
+          cd out
+          zip -qr ../Skybound-unsigned.ipa Payload
+          ls -lh ../Skybound-unsigned.ipa
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Skybound-unsigned-ipa
+          path: Skybound-unsigned.ipa
+          if-no-files-found: error
